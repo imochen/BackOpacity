@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>背景透明内容不透明生成器</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/monokai_sublime.css"/>
+    <script src="js/jquery183.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <style>
+        .control{ width: 600px; overflow: hidden; margin: 0 auto; padding: 20px 0;}
+        .input-group,.form-control{ margin-bottom: 10px;}
+    </style>
+</head>
+<body>
+<div class="control">
+    <div class="input-group">
+        <div class="input-group-addon">选择器</div>
+        <input id="selector" class="form-control" type="text" placeholder="#id || .class || .class a">
+    </div>
+    <div class="input-group">
+        <div class="input-group-addon">色值</div>
+        <input id="color" class="form-control" type="text" placeholder="#dd0000">
+    </div>
+    <div class="input-group">
+        <div class="input-group-addon">透明度</div>
+        <input id="opacity" class="form-control" type="text" placeholder="0.5">
+    </div>
+    <pre>
+        <code class="result css hljs"></code>
+    </pre>
+</div>
+<script>
+    $(function(){
+
+        var $selector = $("#selector"),
+            $color = $("#color"),
+            $opacity = $("#opacity"),
+            $result = $(".result");
+
+        function outputCss( option ){
+            var s = option.selector || '#id';
+            var c = (option.color || '#ff0000').split('#')[1];
+            var o = option.opacity || '0.5';
+
+            if( !o.match(/^0.\d+/) || isNaN(o) || c.length != 6 ){
+                return false;
+            }
+
+
+            var h = (o*255).toString(16).match(/(\w{2})/)[0];
+            var cArr = c.match(/(\w{2})/g);
+
+            var rgbArr = [];
+            $.each( cArr , function(){
+                rgbArr.push( parseInt(this,16) );
+            });
+            var outputTpl = s + '{background:rgba('+ rgbArr.join(',') +',' + o + ');filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#'+ h + c+',endColorstr=#'+ h + c+');zoom:1;}\n:root ' + s + '{filter:none\\9;}/*for IE9*/';
+
+            $result.html(hljs.highlight('css',outputTpl).value);
+        }
+
+        function reOutput(){
+            var option = {};
+            option.selector = $selector.val().trim();
+            option.color = $color.val().trim();
+            option.opacity = $opacity.val().trim();
+            outputCss( option );
+        }
+        reOutput();
+
+        $('input').on('keyup',function(){
+            reOutput();
+        })
+    })
+</script>
+</body>
+</html>
