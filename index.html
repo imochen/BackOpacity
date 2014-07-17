@@ -10,21 +10,27 @@
     <style>
         .control{ width: 600px; overflow: hidden; margin: 0 auto; padding: 20px 0;}
         .input-group,.form-control{ margin-bottom: 10px;}
+        blockquote{ font-size: 14px;}
     </style>
 </head>
 <body>
 <div class="control">
     <div class="input-group">
+        选择器示例：<code>#aa || .bb  || .bb p</code><br/>
+        色值示例：<code>#dd0000</code><br/>
+        透明度示例：<code>0.5[不包含0和1]</code>
+    </div>
+    <div class="input-group">
         <div class="input-group-addon">选择器</div>
-        <input id="selector" class="form-control" type="text" placeholder="#id || .class || .class a">
+        <input id="selector" class="form-control" type="text" >
     </div>
     <div class="input-group">
         <div class="input-group-addon">色值</div>
-        <input id="color" class="form-control" type="text" placeholder="#dd0000">
+        <input id="color" class="form-control" type="text" >
     </div>
     <div class="input-group">
         <div class="input-group-addon">透明度</div>
-        <input id="opacity" class="form-control" type="text" placeholder="0.5">
+        <input id="opacity" class="form-control" type="text" >
     </div>
     <pre>
         <code class="result css hljs"></code>
